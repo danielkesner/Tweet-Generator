@@ -15,7 +15,7 @@ Example usage:
 `java TrumpMarkovChain --generateFromAllTweets realDonaldTrump 5 3 --prompt`
 
 Example output:
-````[INFO] RiTa.version [1.1.51]
+`[INFO] RiTa.version [1.1.51]
 Printing all generated sentences. At the prompt, enter either
 a single value or comma-separated list of values of sentences to publish.
 For example, '1' or '2,3,6' (without any quotes).
@@ -24,6 +24,6 @@ For example, '1' or '2,3,6' (without any quotes).
 2: Great seeing @TheLeeGreenwood and Kimberly at this reporters earliest statement as to what you two talked about.
 3: We are so low - and taken over during O term!
 4: Sorry Joe, that @Morning_Joe.
->   1,3
-Tweets have been posted.````
+1,3
+Tweets have been posted.`
 
