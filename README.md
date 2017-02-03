@@ -15,7 +15,8 @@ Generate numSentences sentences using a model trained from  all tweets on userna
 `java TwitterMarkovChain --generateFromAllTweets realDonaldTrump 5 3 --prompt`
 
 ###Example output:
-```[INFO] RiTa.version [1.1.51]
+```Java
+[INFO] RiTa.version [1.1.51]
 Printing all generated sentences. At the prompt, enter either a single value OR
 comma-separated list of values of sentences to post to Twitter.
 For example, '1' or '2,3,6' (without any quotes).
