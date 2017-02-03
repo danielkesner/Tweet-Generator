@@ -4,17 +4,17 @@ Trains a stochastic model to recognize patterns in speech drawn from any body of
 
 This program is built on top of two open-source platforms: <a href="http://twitter4j.org/en/index.html">Twitter4j</a>, a native Java wrapper for the Twitter API that significantly simplifies the calling interface; and <a href="https://rednoise.org/rita/">RiTa</a>, a software toolkit for computational literature. This program mainly functions as a command-line tool that can first create a Markov Chain with RiTa that has been trained on a Twitter user's Tweets (pulled programmatically from Twitter via Twitter4j), randomly generates a given number of sentences that mimic the sentence structure of the training set, and then posts the randomly-generated sentences back to a new Twitter account via Twitter4j. 
 
-Available commands (more added soon):
+##Available commands (more added soon):
 
 `java TrumpMarkovChain --generateFromAllTweets username numSentences <n-factor> <--prompt>`
 
 Generate numSentences sentences using a model trained from  all tweets on username's timeline (with an optional n-factor specified by n-factor). Add the --prompt flag to have the program list out all the sentences it generated and choose which ones you wish to publish to Twitter via standard input.
 
-Example usage:
+###Example usage:
 
 `java TrumpMarkovChain --generateFromAllTweets realDonaldTrump 5 3 --prompt`
 
-Example output:
+###Example output:
 `[INFO] RiTa.version [1.1.51]
 Printing all generated sentences. At the prompt, enter either
 a single value or comma-separated list of values of sentences to publish.
