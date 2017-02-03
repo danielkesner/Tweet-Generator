@@ -18,8 +18,7 @@ Generate numSentences sentences using a model trained from  all tweets on userna
 ```Java
 [INFO] RiTa.version [1.1.51]
 Printing all generated sentences. At the prompt, enter either a single value OR
-comma-separated list of values of sentences to post to Twitter.
-For example, '1' or '2,3,6' (without any quotes).
+comma-separated list of values of sentences to post to Twitter (i.e. '1' or '2,3,6')
 0: I love those beautiful gals.
 1: No more guns to protect and elect Hillary, whose decisions have led to the truth.
 2: Great seeing @TheLeeGreenwood and Kimberly at this reporters earliest statement as to what you two talked about.
