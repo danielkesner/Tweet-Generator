@@ -17,18 +17,35 @@ import twitter4j.conf.ConfigurationBuilder;
 import util.StringUtil;
 import util.TwitterUserUtilities;
 
-public class TrumpMarkovChain {
+public class TwitterMarkovChain {
 
 	private static int numSentencesToGenerate;
 	private static final int DEFAULT_N_FACTOR = 3;
 
+	// Talk like the users of certain Hashtags
+	// i.e. generate tweets that sound like #Blacklivesmatter users
+	// pro-Trump or something like that
+	// So add methods to fill an ArrayList w/ STrings of certain hashtag users
+	// Change syntax to --generate -flag where flag can be -a for all, etc.
 	private class Authenticater {
 
+		/* @daniel_kesner */
+		//		private static final String OAuthConsumerKey = "KILn6t2caWaZZnmEnRuKunz5K";
+		//		private static final String OAuthConsumerSecret = "1nGa0FBJyskHq7blwP0yfviHGdBZwJQpC2qLdVL8c0GKRrhkCk";
+		//		private static final String OAuthAccessToken = "3262925426-97e7cEKFKGIac7dR9Db4yqM3HXY3xQCSgfPnHNW";
+		//		private static final String OAuthAccessTokenSecret = "2CqTusgJB97YkSIWARRz5hsIgTvL7FHMQom54Lji2RXQ1";	
+
+		/* Random_Trump */
+		private static final String OAuthConsumerKey = "XdqS5t4hLbVD8iiwqzUhpsAqK";
+		private static final String OAuthConsumerSecret = "2YgnMixDrCNl2IbNZP4f0ZovNKUOUOBYlzirPnhkl4J4i29daz";
+		private static final String OAuthAccessToken = "826949020073406466-vLiKUbbl7Qlvjt0GwB5IwvDfzGVKoj3";
+		private static final String OAuthAccessTokenSecret = "6pZeQulzclYTFN8ItQKEcNBkFXZCrjATwkxo6jFsme37V";
+		
 		/* Put your keys here */
-		private static final String OAuthConsumerKey = "xxxxxxxxx";
-		private static final String OAuthConsumerSecret = "xxxxxxxxxxxxxxx";
-		private static final String OAuthAccessToken = "xxxxxxxxxxx";
-		private static final String OAuthAccessTokenSecret = "xxxxxxxxxxxxxx";
+		//private static final String OAuthConsumerKey = "xxxxxxxxxxx";
+		//private static final String OAuthConsumerSecret = "xxxxxxxxxxxx";
+		//private static final String OAuthAccessToken = "xxxxxxx";
+		//private static final String OAuthAccessTokenSecret = "xxxxxxxxxx"; 
 	}
 
 	public static void main(String[] args) throws TwitterException, IOException {
@@ -205,15 +222,17 @@ public class TrumpMarkovChain {
 			else {
 
 				System.out.println("Printing all generated sentences. At the prompt, enter either a single value OR");
-				System.out.println("a comma-separated list of values of sentences to post to Twitter.");
-				System.out.println("For example, '1' or '2,3,6' (without any quotes).");
+				System.out.println("a comma-separated list of values of sentences to post to Twitter (i.e. '1' or '2,3,6'), or '0' to quit.");
 
 				for (int i = 0; i < finalSentencesToPost.size(); i++) {
-					System.out.println(i + ": " + finalSentencesToPost.get(i));
+					System.out.println(i+1 + ": " + finalSentencesToPost.get(i));
 				}
 
 				readFromKeyboard = new BufferedReader(new InputStreamReader(System.in));
 				String input = readFromKeyboard.readLine();
+				
+				if (input.equals("0")) 
+					System.exit(0);
 
 				// If publishing multiple sentences (given a list from user with multiple values)
 				if (input.contains(",")) {
@@ -222,7 +241,7 @@ public class TrumpMarkovChain {
 
 					// Publish only those sentences chosen by user
 					for (int i = 0; i < sentencesToPublish.length; i++) {
-						int idx = Integer.parseInt(sentencesToPublish[i]);
+						int idx = Integer.parseInt(sentencesToPublish[i]) - 1;
 						twitter.updateStatus(finalSentencesToPost.get(idx));
 					}
 				}

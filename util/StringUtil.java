@@ -11,5 +11,4 @@ public class StringUtil {
 		}
 		return true;
 	}
-
 }
