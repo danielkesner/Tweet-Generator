@@ -28,18 +28,6 @@ public class TwitterMarkovChain {
 	// So add methods to fill an ArrayList w/ STrings of certain hashtag users
 	// Change syntax to --generate -flag where flag can be -a for all, etc.
 	private class Authenticater {
-
-		/* @daniel_kesner */
-		//		private static final String OAuthConsumerKey = "KILn6t2caWaZZnmEnRuKunz5K";
-		//		private static final String OAuthConsumerSecret = "1nGa0FBJyskHq7blwP0yfviHGdBZwJQpC2qLdVL8c0GKRrhkCk";
-		//		private static final String OAuthAccessToken = "3262925426-97e7cEKFKGIac7dR9Db4yqM3HXY3xQCSgfPnHNW";
-		//		private static final String OAuthAccessTokenSecret = "2CqTusgJB97YkSIWARRz5hsIgTvL7FHMQom54Lji2RXQ1";	
-
-		/* Random_Trump */
-		private static final String OAuthConsumerKey = "XdqS5t4hLbVD8iiwqzUhpsAqK";
-		private static final String OAuthConsumerSecret = "2YgnMixDrCNl2IbNZP4f0ZovNKUOUOBYlzirPnhkl4J4i29daz";
-		private static final String OAuthAccessToken = "826949020073406466-vLiKUbbl7Qlvjt0GwB5IwvDfzGVKoj3";
-		private static final String OAuthAccessTokenSecret = "6pZeQulzclYTFN8ItQKEcNBkFXZCrjATwkxo6jFsme37V";
 		
 		/* Put your keys here */
 		//private static final String OAuthConsumerKey = "xxxxxxxxxxx";
