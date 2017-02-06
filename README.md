@@ -4,6 +4,8 @@ Trains a stochastic model to recognize patterns in speech drawn from any body of
 
 This program is built on top of two open-source platforms: <a href="http://twitter4j.org/en/index.html">Twitter4j</a>, a native Java wrapper for the Twitter API that significantly simplifies the calling interface; and <a href="https://rednoise.org/rita/">RiTa</a>, a software toolkit for computational literature. This program mainly functions as a command-line tool that can first create a Markov Chain with RiTa based on a Twitter user's tweets (pulled programmatically from Twitter via Twitter4j), randomly generates a given number of sentences that mimic the sentence structure of the training set, and then posts the randomly-generated sentences back to a Twitter account via Twitter4j. More functionality is being added soon, this project is only several days old and still pretty primitive.
 
+For detailed instructions on importing and using this project, please see Setup.MD. For more detailed information on the model used to generate Tweets, <a href="http://text-analytics101.rxnlp.com/2014/11/what-are-n-grams.html">you can read more about n-grams here</a>. The "n" in "n-factor" and "n-gram" is essentially the size of the set of words that you use to train the model. Smaller values of n (in this context, values around 2 or 3) will produce more randomness and variation in the generated output sentences whereas larger values of n (in this context, values around 4 or 5) will produce more coherent and recognizable sentences. 
+
 ##Available commands (more added soon):
 
 `java TwitterMarkovChain --generateFromAllTweets username numSentences <n-factor> <--prompt>`
