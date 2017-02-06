@@ -14,19 +14,21 @@ Generate numSentences sentences using a model trained from  all tweets on userna
 
 ###Example usage:
 
-`java TwitterMarkovChain --generateFromAllTweets realDonaldTrump 5 3 --prompt`
+`java TwitterMarkovChain --generateFromAllTweets realDonaldTrump 10 4 --prompt`
 
 ###Example output:
 ```Java
 [INFO] RiTa.version [1.1.51]
 Printing all generated sentences. At the prompt, enter either a single value OR
-comma-separated list of values of sentences to post to Twitter (i.e. '1' or '2,3,6')
-0: I love those beautiful gals.
-1: No more guns to protect and elect Hillary, whose decisions have led to the truth.
-2: Great seeing @TheLeeGreenwood and Kimberly at this reporters earliest statement as to what you two talked about.
-3: We are so low - and taken over during O term!
-4: Sorry Joe, that @Morning_Joe.
-1,3
+a comma-separated list of values of sentences to post to Twitter (i.e. '1' or '2,3,6'), or '0' to quit.
+1: Made up story by low ratings @Morning_Joe.
+2: Taxpayers are paying a fortune for their release.
+3: Thank you Franklin! @DanScavino: . @JerryJrFalwell: I was so right!
+4: Great evening in San Jose, California- tomorrow at 1: 00pm.
+5: It was my great honor.
+6: Hillary Clinton should have been prosecuted and should be in jail.
+7: We love you! #TrumpPence16 New national poll released.
+8: I will think big for our country & its people- how did he get thru system?
+1,8
 Tweets have been posted.
 ```
-
