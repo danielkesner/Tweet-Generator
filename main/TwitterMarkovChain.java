@@ -1,6 +1,8 @@
 package main;
 
 import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
@@ -19,30 +21,67 @@ import twitter4j.TwitterException;
 import twitter4j.TwitterFactory;
 import twitter4j.conf.ConfigurationBuilder;
 
+
 public class TwitterMarkovChain {
 
 	private static int numSentencesToGenerate;
 	private static final int DEFAULT_N_FACTOR = 3;
+	private static final String DEFAULT_AUTH_PATH = "src/auth/keys.txt";
 
 	private class Authenticater {
-		
-		/* @daniel_kesner */
-		//		private static final String OAuthConsumerKey = "KILn6t2caWaZZnmEnRuKunz5K";
-		//		private static final String OAuthConsumerSecret = "1nGa0FBJyskHq7blwP0yfviHGdBZwJQpC2qLdVL8c0GKRrhkCk";
-		//		private static final String OAuthAccessToken = "3262925426-97e7cEKFKGIac7dR9Db4yqM3HXY3xQCSgfPnHNW";
-		//		private static final String OAuthAccessTokenSecret = "2CqTusgJB97YkSIWARRz5hsIgTvL7FHMQom54Lji2RXQ1";	
 
-		/* Random_Trump */
-		private static final String OAuthConsumerKey = "XdqS5t4hLbVD8iiwqzUhpsAqK";
-		private static final String OAuthConsumerSecret = "2YgnMixDrCNl2IbNZP4f0ZovNKUOUOBYlzirPnhkl4J4i29daz";
-		private static final String OAuthAccessToken = "826949020073406466-vLiKUbbl7Qlvjt0GwB5IwvDfzGVKoj3";
-		private static final String OAuthAccessTokenSecret = "6pZeQulzclYTFN8ItQKEcNBkFXZCrjATwkxo6jFsme37V";
+		private String OAuthConsumerKey;
+		private String OAuthConsumerSecret;
+		private String OAuthAccessToken;
+		private String OAuthAccessTokenSecret;
+
+		/* Creating a new object populates all keys from file */
+		public Authenticater(String pathToAuthFile) {
+			authFromFile(pathToAuthFile);
+		}
 		
-		/* Put your keys here */
-		//private static final String OAuthConsumerKey = "xxxxxxxxxxx";
-		//private static final String OAuthConsumerSecret = "xxxxxxxxxxxx";
-		//private static final String OAuthAccessToken = "xxxxxxx";
-		//private static final String OAuthAccessTokenSecret = "xxxxxxxxxx";
+		private void authFromFile(String pathToFile) {
+
+			BufferedReader reader;
+			String path = "";
+
+			if (pathToFile == null)
+				path = DEFAULT_AUTH_PATH;
+
+			File authFile = new File(path);
+			if (! authFile.exists())
+				throw new RuntimeException("ERROR: Unable to locate authentication file with OAuth credentials.");
+
+			try {
+
+				reader = new BufferedReader(new FileReader(authFile));
+				OAuthConsumerKey = reader.readLine();
+				OAuthConsumerSecret = reader.readLine();
+				OAuthAccessToken = reader.readLine();
+				OAuthAccessTokenSecret = reader.readLine();
+
+			} catch (Exception ex) {
+				System.out.println("Error processing authentication file -- ensure that file format is correct");
+				ex.printStackTrace();
+				System.exit(-1);
+			}
+		}
+		
+		private String getConsumerKey() {
+			return OAuthConsumerKey;
+		}
+		
+		private String getConsumerSecret() {
+			return OAuthConsumerSecret;
+		}
+		
+		private String getAccessToken() {
+			return OAuthAccessToken;
+		}
+		
+		private String getAccessTokenSecret() {
+			return OAuthAccessTokenSecret;
+		}
 	}
 
 	public static void main(String[] args) throws TwitterException, IOException {
@@ -73,19 +112,22 @@ public class TwitterMarkovChain {
 			System.out.println("Usage: java TrumpMarkovChain --generateFromAllTweets username numSentences <n-factor> <--prompt>");
 			System.out.println("All arguments in angle brackets (<>) are optional");
 		}
-
+		
 		/* Let's take a trip to the factory */
-
+		TwitterMarkovChain tmc = new TwitterMarkovChain();
+		Authenticater auth_me = tmc.new Authenticater(null);
+		
 		// Twitter4j objects
 		ConfigurationBuilder cb = new ConfigurationBuilder();
-
+		
 		// Connect to Twitter API and authenticate
 		cb.setDebugEnabled(true)
-		.setOAuthConsumerKey(Authenticater.OAuthConsumerKey)
-		.setOAuthConsumerSecret(Authenticater.OAuthConsumerSecret)
-		.setOAuthAccessToken(Authenticater.OAuthAccessToken)
-		.setOAuthAccessTokenSecret(Authenticater.OAuthAccessTokenSecret);
+		.setOAuthConsumerKey(auth_me.getConsumerKey())
+		.setOAuthConsumerSecret(auth_me.getConsumerSecret())
+		.setOAuthAccessToken(auth_me.getAccessToken())
+		.setOAuthAccessTokenSecret(auth_me.getAccessTokenSecret());
 
+		// Twitter instance
 		Twitter twitter = new TwitterFactory(cb.build()).getInstance();
 
 		// TweetParser objects 
@@ -96,6 +138,7 @@ public class TwitterMarkovChain {
 		TwitterUserUtilities userUtil = new TwitterUserUtilities();
 		StringUtil stringUtil = new StringUtil();
 
+		// --generateFromAllTweets objects
 		List<Status> tweets;
 		BufferedReader readFromKeyboard;
 		String twitterUsername = "";
@@ -112,7 +155,7 @@ public class TwitterMarkovChain {
 				System.exit(-1);
 			}
 
-			// Populate variables from command line args
+			/* Populate variables from command line args */
 			try {
 
 				// If user enters @user instead of user, remove the @
@@ -125,13 +168,15 @@ public class TwitterMarkovChain {
 				}
 
 				numSentencesToGenerate = Integer.parseInt(args[2]);
-
+				
+				/* Determine n-factor and prompt flag */
 				switch (args.length) {
-				// Default n-factor, no prompt (flag is already set to false)
+				
+				/* Case:  Default n-factor, no prompt (flag is already set to false) */
 				case 3:
 					nfactor = DEFAULT_N_FACTOR;
 
-					// User specified with n-factor or prompt flag in args[3]
+				/* Case: User specified with n-factor or prompt flag in args[3] */
 				case 4:
 					// If final argument is --prompt, update variable
 					if (args[3].equals("--prompt"))
@@ -145,7 +190,7 @@ public class TwitterMarkovChain {
 					else
 						throw new RuntimeException("ERROR: Unable to parse final argument args[3]: " + args[3]);
 
-					// User-defined n-factor, prompt is true
+				/* Case: User-defined n-factor, prompt is true */
 				case 5:
 					nfactor = Integer.parseInt(args[3]);
 					promptBeforePosting = true;
@@ -227,7 +272,7 @@ public class TwitterMarkovChain {
 
 				readFromKeyboard = new BufferedReader(new InputStreamReader(System.in));
 				String input = readFromKeyboard.readLine();
-				
+
 				if (input.equals("0")) 
 					System.exit(0);
 
@@ -248,6 +293,7 @@ public class TwitterMarkovChain {
 					twitter.updateStatus(finalSentencesToPost.get(Integer.parseInt(input)));
 
 				System.out.println("Tweets have been posted.");
+				System.exit(0);
 			}
 		}
 	}
