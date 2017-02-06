@@ -8,32 +8,41 @@ import java.util.List;
 
 import parsers.TweetPostParser;
 import parsers.TweetPreParser;
+import util.StringUtil;
+import util.TwitterUserUtilities;
+
 import rita.RiMarkov;
+
 import twitter4j.Status;
 import twitter4j.Twitter;
 import twitter4j.TwitterException;
 import twitter4j.TwitterFactory;
 import twitter4j.conf.ConfigurationBuilder;
-import util.StringUtil;
-import util.TwitterUserUtilities;
 
 public class TwitterMarkovChain {
 
 	private static int numSentencesToGenerate;
 	private static final int DEFAULT_N_FACTOR = 3;
 
-	// Talk like the users of certain Hashtags
-	// i.e. generate tweets that sound like #Blacklivesmatter users
-	// pro-Trump or something like that
-	// So add methods to fill an ArrayList w/ STrings of certain hashtag users
-	// Change syntax to --generate -flag where flag can be -a for all, etc.
 	private class Authenticater {
+		
+		/* @daniel_kesner */
+		//		private static final String OAuthConsumerKey = "KILn6t2caWaZZnmEnRuKunz5K";
+		//		private static final String OAuthConsumerSecret = "1nGa0FBJyskHq7blwP0yfviHGdBZwJQpC2qLdVL8c0GKRrhkCk";
+		//		private static final String OAuthAccessToken = "3262925426-97e7cEKFKGIac7dR9Db4yqM3HXY3xQCSgfPnHNW";
+		//		private static final String OAuthAccessTokenSecret = "2CqTusgJB97YkSIWARRz5hsIgTvL7FHMQom54Lji2RXQ1";	
+
+		/* Random_Trump */
+		private static final String OAuthConsumerKey = "XdqS5t4hLbVD8iiwqzUhpsAqK";
+		private static final String OAuthConsumerSecret = "2YgnMixDrCNl2IbNZP4f0ZovNKUOUOBYlzirPnhkl4J4i29daz";
+		private static final String OAuthAccessToken = "826949020073406466-vLiKUbbl7Qlvjt0GwB5IwvDfzGVKoj3";
+		private static final String OAuthAccessTokenSecret = "6pZeQulzclYTFN8ItQKEcNBkFXZCrjATwkxo6jFsme37V";
 		
 		/* Put your keys here */
 		//private static final String OAuthConsumerKey = "xxxxxxxxxxx";
 		//private static final String OAuthConsumerSecret = "xxxxxxxxxxxx";
 		//private static final String OAuthAccessToken = "xxxxxxx";
-		//private static final String OAuthAccessTokenSecret = "xxxxxxxxxx"; 
+		//private static final String OAuthAccessTokenSecret = "xxxxxxxxxx";
 	}
 
 	public static void main(String[] args) throws TwitterException, IOException {
