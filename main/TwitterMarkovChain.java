@@ -96,16 +96,6 @@ public class TwitterMarkovChain {
 		 * list out all the sentences it generated and choose which ones you
 		 * wish to publish to Twitter via standard input.
 		 * 
-		 * Ex: java TrumpMarkovChain --generateFromAllTweets realDonaldTrump 5 3 --prompt
-		 * 
-		 * Train a model with an n-factor of 3 using all tweets from @realDonaldTrump's timeline,
-		 * output 5 randomly generated sentences, allow user to choose which of the 5 to post to Twitter.
-		 * 
-		 * Ex: java TrumpMarkovChain --generateFromAllTweets realDonaldTrump 5
-		 * 
-		 * Train a model with the default n-factor using all tweets from @realDonaldTrump's timeline,
-		 * output 5 random sentences, post all 5 automatically to Twitter without prompting user.
-		 * 
 		 *  */
 
 		if (args.length == 0) {
@@ -142,7 +132,7 @@ public class TwitterMarkovChain {
 		List<Status> tweets;
 		BufferedReader readFromKeyboard;
 		String twitterUsername = "";
-		String allTweets = "";
+	//	String allTweets = "";
 		boolean promptBeforePosting = false;
 		int nfactor = 0;	// initialize to 0, exception will be thrown if this is not set before call to generateSentences()
 
@@ -209,7 +199,10 @@ public class TwitterMarkovChain {
 			}
 
 			/* Get all tweets from user */
-			tweets = userUtil.getAllTweetsFromTimeline(twitter, twitterUsername);	
+			tweets = userUtil.getAllTweetsFromTimeline(twitter, twitterUsername);
+			
+			// Create StringBuilder object to concatenate all tweets into single string
+			StringBuilder strbuild = new StringBuilder(tweets.size());
 
 			// Concatenate all tweets into a single String to be fed to RiTa
 			for (Status status : tweets) {
@@ -224,7 +217,7 @@ public class TwitterMarkovChain {
 
 					// Confirm that the tweet we're adding isn't just whitespace
 					if (! (tweet.equals("") || tweet.equals(" "))){
-						allTweets += tweet + " ";
+						strbuild.append(tweet);
 					}
 
 				} catch (Exception e) {
@@ -237,7 +230,7 @@ public class TwitterMarkovChain {
 
 			// RiMarkov(Object parent, int nFactor, boolean recognizeSentences, boolean allowDuplicates)
 			RiMarkov rm = new RiMarkov(null, nfactor, true, true);
-			rm.loadText(allTweets);
+			rm.loadText(strbuild.toString());
 			String[] sentences = rm.generateSentences(numSentencesToGenerate);
 			ArrayList<String> finalSentencesToPost = new ArrayList<String>(sentences.length);
 
