@@ -6,20 +6,19 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 
 import parsers.TweetPostParser;
 import parsers.TweetPreParser;
-import util.StringUtil;
-import util.TwitterUserUtilities;
-
 import rita.RiMarkov;
-
 import twitter4j.Status;
 import twitter4j.Twitter;
 import twitter4j.TwitterException;
 import twitter4j.TwitterFactory;
 import twitter4j.conf.ConfigurationBuilder;
+import util.StringUtil;
+import util.TwitterUserUtilities;
 
 
 public class TwitterMarkovChain {
@@ -27,6 +26,8 @@ public class TwitterMarkovChain {
 	private static int numSentencesToGenerate;
 	private static final int DEFAULT_N_FACTOR = 3;
 	private static final String DEFAULT_AUTH_PATH = "src/auth/keys.txt";
+	
+	private static HashSet<String> tweetsHash;
 
 	private class Authenticater {
 
@@ -203,11 +204,16 @@ public class TwitterMarkovChain {
 			
 			// Create StringBuilder object to concatenate all tweets into single string
 			StringBuilder strbuild = new StringBuilder(tweets.size());
+			
+			tweetsHash = new HashSet<String>(10000);		// initialize higher to hope for fewer resizings (trade memory for speed)
 
 			// Concatenate all tweets into a single String to be fed to RiTa
 			for (Status status : tweets) {
 
 				String tweet = status.getText();
+				
+				// Add the lowercase tweet text to HashSet (compare with lowercase output)
+				tweetsHash.add(tweet.toLowerCase());
 
 				try {
 					// Remove newlines, "RTs", and URLs (i.e. strings including "http://")
@@ -239,9 +245,10 @@ public class TwitterMarkovChain {
 				sentence = postParser.removeNonAlphaTokens(sentence);
 				sentence = postParser.attachHashtagsAndMentions(sentence);
 
-				// Only add final output sentence to sentenceList if (more constraints can be added later):
+				// Only add final output sentence to sentenceList if:
 				// - length of total tweet is <=140 characters (tweet max length)
-				if (sentence.length() < 141) 
+				// - sentence generated isn't a literal copy of something user has already tweeted
+				if (sentence.length() < 141 && !tweetsHash.contains(sentence.toLowerCase())) 
 					finalSentencesToPost.add(sentence);
 			}
 
@@ -283,7 +290,7 @@ public class TwitterMarkovChain {
 
 				// Publish the single sentence specified by user
 				else 
-					twitter.updateStatus(finalSentencesToPost.get(Integer.parseInt(input)));
+					twitter.updateStatus(finalSentencesToPost.get(Integer.parseInt(input) - 1));
 
 				System.out.println("Tweets have been posted.");
 				System.exit(0);
