@@ -3,7 +3,7 @@ package parsers;
 /* 
  * @author Daniel Kesner
  * 
- * Implements methods to parse and transform Strings that are
+ * Implements methods to parse and transform Strings
  * generated with RiTa.   */
 
 public class TweetPostParser {

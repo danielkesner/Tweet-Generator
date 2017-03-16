@@ -19,7 +19,7 @@ import twitter4j.TwitterFactory;
 import twitter4j.conf.ConfigurationBuilder;
 import util.StringUtil;
 import util.TwitterUserUtilities;
-
+import auth.Authenticater;
 
 public class TwitterMarkovChain {
 
@@ -29,61 +29,6 @@ public class TwitterMarkovChain {
 	
 	private static HashSet<String> tweetsHash;
 
-	private class Authenticater {
-
-		private String OAuthConsumerKey;
-		private String OAuthConsumerSecret;
-		private String OAuthAccessToken;
-		private String OAuthAccessTokenSecret;
-
-		/* Creating a new object populates all keys from file */
-		public Authenticater(String pathToAuthFile) {
-			authFromFile(pathToAuthFile);
-		}
-		
-		private void authFromFile(String pathToFile) {
-
-			BufferedReader reader;
-			String path = "";
-
-			if (pathToFile == null)
-				path = DEFAULT_AUTH_PATH;
-
-			File authFile = new File(path);
-			if (! authFile.exists())
-				throw new RuntimeException("ERROR: Unable to locate authentication file with OAuth credentials.");
-
-			try {
-
-				reader = new BufferedReader(new FileReader(authFile));
-				OAuthConsumerKey = reader.readLine();
-				OAuthConsumerSecret = reader.readLine();
-				OAuthAccessToken = reader.readLine();
-				OAuthAccessTokenSecret = reader.readLine();
-
-			} catch (Exception ex) {
-				System.out.println("Error processing authentication file -- ensure that file format is correct");
-				ex.printStackTrace();
-				System.exit(-1);
-			}
-		}
-		
-		private String getConsumerKey() {
-			return OAuthConsumerKey;
-		}
-		
-		private String getConsumerSecret() {
-			return OAuthConsumerSecret;
-		}
-		
-		private String getAccessToken() {
-			return OAuthAccessToken;
-		}
-		
-		private String getAccessTokenSecret() {
-			return OAuthAccessTokenSecret;
-		}
-	}
 
 	public static void main(String[] args) throws TwitterException, IOException {
 
@@ -105,8 +50,7 @@ public class TwitterMarkovChain {
 		}
 		
 		/* Let's take a trip to the factory */
-		TwitterMarkovChain tmc = new TwitterMarkovChain();
-		Authenticater auth_me = tmc.new Authenticater(null);
+		Authenticater auth_me = new Authenticater(null);
 		
 		// Twitter4j objects
 		ConfigurationBuilder cb = new ConfigurationBuilder();
@@ -133,7 +77,6 @@ public class TwitterMarkovChain {
 		List<Status> tweets;
 		BufferedReader readFromKeyboard;
 		String twitterUsername = "";
-	//	String allTweets = "";
 		boolean promptBeforePosting = false;
 		int nfactor = 0;	// initialize to 0, exception will be thrown if this is not set before call to generateSentences()
 
@@ -149,7 +92,7 @@ public class TwitterMarkovChain {
 			/* Populate variables from command line args */
 			try {
 
-				// If user enters @user instead of user, remove the @
+				// If user enters @username instead of username, remove the @
 				if (args[1].substring(0,1).equals("@")) {
 					twitterUsername = args[1].substring(1, args[1].length());
 				}
