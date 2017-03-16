@@ -16,24 +16,6 @@ import util.TwitterUserUtilities;
 
 public class TimeSeriesUtilities {
 	
-	// Returns a new Twitter object that's already been connected & authenticated
-	// Pass a null String to use the default authfile path ("src/auth/keys.txt")
-	private Twitter createTwitterInstance(String pathToAuthFile) {
-		
-		// Instance of authentication class -- if null, path is src/auth/keys.txt
-		Authenticater auth_me = new Authenticater(pathToAuthFile);
-		
-		ConfigurationBuilder cb = new ConfigurationBuilder();
-		
-		// Connect to Twitter API and authenticate
-		cb.setDebugEnabled(true)
-		.setOAuthConsumerKey(auth_me.getConsumerKey())
-		.setOAuthConsumerSecret(auth_me.getConsumerSecret())
-		.setOAuthAccessToken(auth_me.getAccessToken())
-		.setOAuthAccessTokenSecret(auth_me.getAccessTokenSecret());
-		
-		return new TwitterFactory(cb.build()).getInstance();
-	}
 
 	public static void writeTSToFile(String twitterUsername, String pathToFile, Twitter twitterInstance) throws TwitterException {
 		ArrayList<Status> tweets = new TwitterUserUtilities().getAllTweetsFromTimeline(twitterInstance, twitterUsername);
