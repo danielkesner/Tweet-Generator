@@ -11,7 +11,7 @@ public class Authenticater {
 	private String OAuthAccessToken;
 	private String OAuthAccessTokenSecret;
 	
-	private static final String DEFAULT_AUTH_PATH = "auth/keys.txt";
+	public static final String DEFAULT_AUTH_PATH = "auth/keys.txt";
 
 	/* Creating a new object populates all keys from file */
 	public Authenticater(String pathToAuthFile) {
@@ -23,7 +23,7 @@ public class Authenticater {
 		BufferedReader reader;
 		String path = "";
 
-		if (pathToFile.equals("DEFAULT_AUTH_PATH")) 
+		if (pathToFile.equals(DEFAULT_AUTH_PATH)) 
 			path = DEFAULT_AUTH_PATH;
 		
 		else 

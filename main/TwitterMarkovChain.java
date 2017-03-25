@@ -9,6 +9,7 @@ import java.util.HashSet;
 import java.util.List;
 
 import parsers.*;
+import auth.Authenticater;
 
 import rita.RiMarkov;
 
@@ -52,14 +53,7 @@ public class TwitterMarkovChain {
 		if (args.length > 8 || args.length < 3) 
 			throw new RuntimeException("ERROR: Invalid number of arguments.");
 
-		Twitter twitter = TwitterUserUtilities.createTwitterInstance("DEFAULT_AUTH_PATH");
-
-		// TweetParser objects 
-		TweetPreParser preParser = new TweetPreParser();
-		TweetPostParser postParser = new TweetPostParser();
-
-		// Util objects
-		TwitterUserUtilities userUtil = new TwitterUserUtilities();
+		Twitter twitter = TwitterUserUtilities.createTwitterInstance(Authenticater.DEFAULT_AUTH_PATH);
 
 		String twitterUsername = null;
 		boolean promptBeforePosting = false;
@@ -91,7 +85,7 @@ public class TwitterMarkovChain {
 			}
 
 			/* Get all tweets from user */
-			tweets = userUtil.getAllTweetsFromTimeline(twitter, twitterUsername);
+			tweets = TwitterUserUtilities.getAllTweetsFromTimeline(twitter, twitterUsername);
 
 			// Create StringBuilder object to concatenate all tweets into single string
 			StringBuilder strbuild = new StringBuilder(tweets.size());
@@ -108,8 +102,8 @@ public class TwitterMarkovChain {
 
 				try {
 					// Remove newlines, "RTs", and URLs (i.e. strings including "http://")
-					if (preParser.needsToBeTrimmed(tweet)){
-						tweet = preParser.trimNonWords(tweet);
+					if (TweetPreParser.needsToBeTrimmed(tweet)){
+						tweet = TweetPreParser.trimNonWords(tweet);
 					}
 
 					// Confirm that the tweet we're adding isn't just whitespace
@@ -133,8 +127,8 @@ public class TwitterMarkovChain {
 
 			for (String sentence : sentences) {
 				// Clean up the RiTa-generated sentences
-				sentence = postParser.removeNonAlphaTokens(sentence);
-				sentence = postParser.attachHashtagsAndMentions(sentence);
+				sentence = TweetPostParser.removeNonAlphaTokens(sentence);
+				sentence = TweetPostParser.attachNonAlphaChars(sentence);
 
 				// Only add final output sentence to sentenceList if:
 				// - length of total tweet is <=140 characters (tweet max length)

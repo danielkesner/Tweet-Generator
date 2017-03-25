@@ -20,7 +20,7 @@ import twitter4j.conf.ConfigurationBuilder;
 public class TwitterUserUtilities {
 
 	// Reads all tweets from twitterUsername's timeline, stores raw text payload into ArrayList
-	public ArrayList<Status> getAllTweetsFromTimeline(Twitter twitterInstance, String twitterUsername) throws TwitterException {
+	public static ArrayList<Status> getAllTweetsFromTimeline(Twitter twitterInstance, String twitterUsername) throws TwitterException {
 		ArrayList<Status> tweets = new ArrayList<Status>();
 		int pageno = 1;
 		

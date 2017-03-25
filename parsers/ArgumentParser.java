@@ -42,4 +42,12 @@ public class ArgumentParser {
 		return false;
 	}
 
+	public static String getPathToFile(String[] args) {
+		for (int i = 1; i < args.length; i++) {
+			if (args[i].equals("-p"))
+				return args[i+1];
+		}
+		return null;
+	}
+	
 }
