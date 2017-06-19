@@ -18,6 +18,8 @@ Generate numberOfSentences sentences using a model trained from all tweets on us
 
 `--generateFromAll -u realDonaldTrump -nfac 5 -n 10 --prompt`
 
+Create a Markov Chain with an n-factor of 5; generate 10 sentences trained on all Tweets posted by @realDonaldTrump, and prompt user to ask which sentences they wish to post (the alternative is to automatically post all sentences to your timeline).
+
 ### Example output:
 ```Java
 [INFO] RiTa.version [1.1.51]
