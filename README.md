@@ -10,9 +10,9 @@ For detailed instructions on importing and using this project, please see Setup.
 
 ## Available commands (more added soon):
 
-`java TwitterMarkovChain --generateFromAllTweets username numSentences <n-factor> <--prompt>`
+`--generateFromAllTweets -u [username] -n [numberOfSentences] <n-factor> <--prompt>`
 
-Generate numSentences sentences using a model trained from  all tweets on username's timeline (with an optional n-factor specified by n-factor). Add the --prompt flag to have the program list out all the sentences it generated and choose which ones you wish to publish to Twitter via standard input.
+Generate numberOfSentences sentences using a model trained from all tweets on username's timeline (with an optional n-factor specified by n-factor). Add the --prompt flag to have the program list out all the sentences it generated and choose which ones you wish to publish to Twitter via standard input.
 
 ### Example usage:
 
