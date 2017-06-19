@@ -8,19 +8,19 @@ TimeSeriesUtilities.java pulls all Tweets posted by a given user and stores the 
 
 For detailed instructions on importing and using this project, please see Setup.MD. For more detailed information on the model used to generate Tweets, <a href="http://text-analytics101.rxnlp.com/2014/11/what-are-n-grams.html">you can read more about n-grams here</a>. The "n" in "n-factor" and "n-gram" is essentially the size of the set of words that you use to train the model. Smaller values of n (in this context, values around 2 or 3) will produce more randomness and incoherent output sentences whereas larger values of n (in this context, values around 4 or 5) will produce more coherent and recognizable sentences. 
 
-## Available commands (more added soon):
+### Create a Markov Chain and generate new Tweets
 
-`--generateFromAllTweets -u [username] -n [numberOfSentences] <n-fac> [n-factor] <--prompt>`
+`java TwitterMarkovChain --generateFromAllTweets -u [username] -n [numberOfSentences] <n-fac> [n-factor] <--prompt>`
 
-Generate numberOfSentences sentences using a model trained from all tweets on username's timeline (with an optional n-factor specified by n-fac). Add the --prompt flag to have the program list out all the sentences it generated and choose which ones you wish to publish to Twitter via standard input.
+Generate numberOfSentences sentences using a model trained from all tweets on @username's timeline (with an optional n-factor specified by n-fac). Add the --prompt flag to have the program list out all the sentences it generated and choose which ones you wish to publish to Twitter via standard input.
 
-### Example usage:
+### Example usage
 
 `--generateFromAll -u realDonaldTrump -nfac 5 -n 10 --prompt`
 
 Create a Markov Chain with an n-factor of 5; generate 10 sentences trained on all Tweets posted by @realDonaldTrump, and prompt user to ask which sentences they wish to post (the alternative is to automatically post all sentences to your timeline).
 
-### Example output:
+### Example output
 ```Java
 [INFO] RiTa.version [1.1.51]
 Printing all generated sentences. At the prompt, enter either a single value OR
@@ -35,3 +35,15 @@ a comma-separated list of values of sentences to post to Twitter (i.e. '1' or '2
 3,6
 Tweets have been posted.
 ```
+
+### Create a file with Time Series data to be fed to R or other software for analysis
+
+`java TimeSeriesBuilder --buildts -u [username] -p [path_to_output_file]`
+
+Reads all Tweets posted by @username, write each time in 24-hour format as a comma-separated list to an output file specified by path_to_output_file. 
+
+### Example usage
+
+`--buildts -u realDonaldTrump -p /src/data/trump_time_series.txt`
+
+Read all Tweets by @realDonaldTrump, write the comma-separated list of times to src/data/trump_time_series.txt.
